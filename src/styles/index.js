@@ -2,8 +2,9 @@ import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 export const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("window").width > 720 ? "60%" : "100%",
-    alignSelf: "center"
+    width: Dimensions.get("window").width > 720 ? "90%" : "100%",
+    alignSelf: "center",
+    backgroundColor: "#F7FAFC"
   },
   textInputStyle: {
     height: 40,

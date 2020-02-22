@@ -18,7 +18,15 @@ import Modal from "modal-enhanced-react-native-web";
 import { Seperator } from "../components";
 import { login } from "../consts";
 import { AsyncStorage } from "react-native-web";
-import Icon, { FontAwesome, Feather, Ionicons } from "react-web-vector-icons";
+import {
+  FontAwesome,
+  Feather,
+  Ionicons,
+  MaterialCommunityIcons
+} from "react-web-vector-icons";
+import { Icon } from "../icons";
+import { SideDrawerMenu } from "../components/side_drawer";
+import { TopSection } from "../components/top_section";
 
 class Posts extends Component {
   constructor(props) {
@@ -34,7 +42,8 @@ class Posts extends Component {
       loginLoading: false,
       snackbar: false,
       user: "",
-      showLogin: true
+      showLogin: true,
+      showMenu: false
     };
   }
 
@@ -68,6 +77,7 @@ class Posts extends Component {
           title={item.title}
           content={item.content}
           author={[item.author.name, item.author.email]}
+          comments={item.__meta__.total_comments}
         />
       </TouchableOpacity>
     );
@@ -180,14 +190,28 @@ class Posts extends Component {
     );
   };
 
+  _renderSideMenu = () => {
+    return (
+      <SideDrawerMenu
+        modalVisible={this.state.showMenu}
+        closeMenu={this._toogleMenu}
+      />
+    );
+  };
+  _toogleMenu = () => {
+    this.setState({ showMenu: false });
+  };
+
   render() {
     return (
       <View style={{ flex: 1 }}>
+        {this._renderSideMenu()}
         <Header
           onLogin={this.toogleModal}
           showLogin={this.state.showLogin}
           user={this.state.user}
           onLogout={this.onLogout}
+          onMenu={() => this.setState({ showMenu: true })}
         />
         {this._showLoginSuccess()}
         <LoginModal
@@ -200,22 +224,121 @@ class Posts extends Component {
           onLogin={this._onLogin}
           loading={this.state.loginLoading}
         />
-        <View style={styles.container}>
-          {this.state.loading ? (
-            <ActivityIndicator size="large" />
-          ) : this.state.showPost ? (
-            <PostUI post={this.state.post} onBack={this._goback} />
-          ) : (
-            <FlatList
+        <TopSection />
+        <View style={{ backgroundColor: "#F7FAFC" }}>
+          <View
+            style={{
+              width: "80%",
+              alignSelf: "center",
+              flexDirection: "row"
+            }}
+          >
+            <View
               style={{
-                alignSelf: "center",
-                width: Dimensions.get("window").width > 720 ? "90%" : "100%"
+                width: "65%",
+                alignSelf: "flex-start"
               }}
-              data={this.state.posts}
-              renderItem={({ item }) => this._renderPosts(item)}
-              keyExtractor={(item, index) => index.toString()}
-            ></FlatList>
-          )}
+            >
+              <View
+                style={{
+                  width: "90%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: 20,
+                  padding: 10,
+                  alignSelf: "center"
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "BlinkMacSystemFont",
+                    fontSize: 24,
+                    fontWeight: "700",
+                    color: "#4a5568"
+                  }}
+                >
+                  Latest Articles
+                </Text>
+                <TouchableOpacity>
+                  <View>
+                    <Text
+                      style={{
+                        fontFamily: "BlinkMacSystemFont",
+                        fontSize: 20,
+                        fontWeight: "400",
+                        color: "#4a5568"
+                      }}
+                    >
+                      View All
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              {this.state.loading ? (
+                <ActivityIndicator size="large" />
+              ) : this.state.showPost ? (
+                <PostUI post={this.state.post} onBack={this._goback} />
+              ) : (
+                <FlatList
+                  style={{
+                    alignSelf: "center",
+                    width:
+                      Dimensions.get("window").width > 720 ? "90%" : "100%",
+                    marginTop: 10
+                  }}
+                  data={this.state.posts}
+                  renderItem={({ item }) => this._renderPosts(item)}
+                  keyExtractor={(item, index) => index.toString()}
+                ></FlatList>
+              )}
+            </View>
+            <View style={{ width: "35%" }}>
+              <View
+                style={{
+                  width: "100%",
+                  height: 100,
+                  backgroundColor: "#fff",
+                  shadowRadius: 5,
+                  shadowColor: "gray",
+                  shadowOpacity: 0.8,
+                  marginTop: 65,
+                  borderRadius: 10
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "400",
+                      margin: 15,
+                      fontFamily: "BlinkMacSystemFont"
+                    }}
+                  >
+                    Categories
+                  </Text>
+                  <TouchableOpacity>
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "400",
+                          margin: 15,
+                          fontFamily: "BlinkMacSystemFont"
+                        }}
+                      >
+                        View All
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
         </View>
       </View>
     );
@@ -292,7 +415,7 @@ const Header = props => {
       style={{
         flexDirection: "row",
         height: Dimensions.get("window").width > 720 ? 100 : 56,
-        backgroundColor: "#d0eaff",
+        backgroundColor: /* "#d0eaff" */ "#fff",
         justifyContent: "center"
       }}
     >
@@ -305,23 +428,27 @@ const Header = props => {
           alignSelf: "center"
         }}
       >
-        <View>
-          {/* <Text
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <TouchableOpacity onPress={() => props.onMenu()}>
+            <View>
+              <Icon
+                name="sort-variant"
+                /* color="#5ab5ff" */ color="#3C98B5"
+                size={30}
+              />
+            </View>
+          </TouchableOpacity>
+          <Seperator width={5} height={0} />
+          <Text
             style={{
               fontSize: Dimensions.get("window").width > 720 ? 26 : 20,
               fontWeight: "bold",
-              color: "#5ab5ff",
-              padding: 10
+              /* color: "#5ab5ff" */
+              color: "#3C98B5"
             }}
           >
             Blog
-          </Text> */}
-          <Ionicons
-            name="md-home"
-            color="#5ab5ff"
-            size={30}
-            // style={{}}
-          />
+          </Text>
         </View>
         <View
           style={{
@@ -334,23 +461,12 @@ const Header = props => {
               onPress={() => props.onLogin()}
               style={{ paddingStart: 5, paddingEnd: 5 }}
             >
-              <View
-                style={{
-                  backgroundColor: "#b7dfff",
-                  height: 30,
-                  justifyContent: "center",
-                  borderRadius: 4,
-                  width: 70,
-                  alignItems: "center",
-                  shadowColor: "#002747",
-                  shadowOpacity: 1,
-                  shadowOffset: { width: 3, height: 2 }
-                }}
-              >
-                <Text style={{ fontWeight: "600", color: "#000" }}>
-                  {" "}
-                  Login{" "}
-                </Text>
+              <View>
+                <Icon
+                  name="account"
+                  /* color="#5ab5ff" */ color="#3C98B5"
+                  size={30}
+                />
               </View>
             </TouchableWithoutFeedback>
           ) : (
@@ -382,14 +498,18 @@ const PostView = props => {
     <View
       style={{
         shadowColor: "grey",
-        shadowOffset: { height: 3, width: 1 },
-        shadowOpacity: 1,
+        shadowOffset: { height: 2, width: 0 },
+        shadowRadius: 5,
+        shadowOpacity: 0.5,
         margin: 10,
         marginBottom: 3,
         borderRadius: 10,
         paddingStart: 20,
         paddingEnd: 20,
-        backgroundColor: "#d0eaff"
+        backgroundColor: "#fff",
+        height: 150,
+        elevation: 10,
+        justifyContent: "center"
       }}
     >
       <Text style={{ fontSize: 20, margin: 5, fontWeight: "bold" }}>
@@ -402,12 +522,7 @@ const PostView = props => {
         ellipsizeMode="tail"
       >
         {" "}
-        {props.content +
-          props.content +
-          props.content +
-          props.content +
-          props.content +
-          props.content}{" "}
+        {props.content}
       </Text>
       <View style={{ flexDirection: "row", padding: 5 }}>
         <Text style={{ fontSize: 12, fontStyle: "italic", marginBottom: 2 }}>
@@ -417,6 +532,12 @@ const PostView = props => {
             {" "}
             {props.author[0]} {" , "} {props.author[1]}{" "}
           </Text>{" "}
+        </Text>
+      </View>
+      <View style={{ flexDirection: "row" }}>
+        <Icon name="forum" size={20} color="#000" />
+        <Text style={{ fontSize: 14, alignSelf: "center", marginStart: 5 }}>
+          {props.comments}
         </Text>
       </View>
     </View>
