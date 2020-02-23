@@ -1,7 +1,11 @@
-import { getAllPost, login, me } from "../consts";
+import { getAllPost, login, me, categories, postByCategory } from "../consts";
 
 export const _getAllPosts = async props => {
   return fetch(getAllPost);
+};
+
+export const _getAllCategories = async props => {
+  return fetch(categories);
 };
 
 export const _login = async props => {
@@ -10,8 +14,8 @@ export const _login = async props => {
   return fetch(login, {
     method: props[0],
     body: JSON.stringify({
-      email: "mridulbaishya28@gmail.com",
-      password: "mmxunite2"
+      email: props[1],
+      password: props[2]
     }),
     headers: {
       Accept: "application/json",
@@ -31,4 +35,8 @@ export const _getUser = async props => {
 
 export const _logout = async props => {
   return null;
+};
+
+export const _postByCategory = async props => {
+  return fetch(postByCategory + props);
 };
