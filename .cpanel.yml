@@ -1,2 +1,2 @@
-- export DEPLOYPATH=/home/dartmqx2/rn-blog/
+- export DEPLOYPATH=/home/dartmqx2/rn-blog/public
 - /bin/cp -r * $DEPLOYPATH
