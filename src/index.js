@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import Posts from "./screens/Posts";
 import * as serviceWorker from "./serviceWorker";
 import BrowerApp from "./App";
 require("react-web-vector-icons/fonts");
