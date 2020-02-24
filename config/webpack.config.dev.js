@@ -229,9 +229,7 @@ module.exports = {
                     }
                   }
                 ],
-                "react-hot-loader/babel",
-                "@babel/plugin-proposal-class-properties",
-                "@babel/plugin-proposal-export-default-from"
+                "react-hot-loader/babel"
               ],
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/

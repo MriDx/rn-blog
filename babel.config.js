@@ -11,9 +11,7 @@ module.exports = function(api) {
             "^react-native$": "react-native-web"
           }
         }
-      ],
-      "@babel/plugin-proposal-class-properties",
-      "@babel/plugin-proposal-export-default-from"
+      ]
     ]
   };
 };
