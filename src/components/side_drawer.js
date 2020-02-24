@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Dimensions, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Linking
+} from "react-native";
 import Modal from "modal-enhanced-react-native-web";
 import { Icon } from "../icons";
 import { Seperator } from ".";
@@ -22,25 +29,30 @@ export const SideDrawerMenu = props => {
         style={{ width: "100%", height: "100%", backgroundColor: "#EEF8F4" }}
       >
         <Seperator height={56} width={0} />
-        <View style={{ padding: 20, flexDirection: "row" }}>
-          <Icon
-            name="account"
-            size={75}
-            color="#44A9C9"
-            style={{ alignSelf: "flex-start" }}
-          />
-          <Text
-            style={{
-              alignSelf: "center",
-              fontSize: 18,
-              fontWeight: "700",
-              marginStart: 20,
-              color: "#44A9C9"
-            }}
-          >
-            Mridul Baishya
-          </Text>
-        </View>
+        {props.user != null ? (
+          <TouchableWithoutFeedback onPress={() => Linking.openURL("/Profile")}>
+            <View style={{ padding: 20, flexDirection: "row" }}>
+              <Icon
+                name="account"
+                size={75}
+                color="#44A9C9"
+                style={{ alignSelf: "flex-start" }}
+              />
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontSize: 18,
+                  fontWeight: "700",
+                  marginStart: 20,
+                  color: "#44A9C9",
+                  textTransform: "capitalize"
+                }}
+              >
+                {props.user.name}
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        ) : null}
       </View>
     </Modal>
   );

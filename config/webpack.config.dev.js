@@ -230,7 +230,8 @@ module.exports = {
                   }
                 ],
                 "react-hot-loader/babel",
-                "@babel/plugin-proposal-class-properties"
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-proposal-export-default-from"
               ],
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -259,7 +260,8 @@ module.exports = {
               cacheDirectory: true,
               plugins: [
                 "react-hot-loader/babel",
-                "@babel/plugin-proposal-class-properties"
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-proposal-export-default-from"
               ],
               // Don't waste time on Gzipping the cache
               cacheCompression: false,

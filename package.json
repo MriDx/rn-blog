@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.8.0",
+    "@react-navigation/core": "3.5.2",
+    "@react-navigation/web": "^1.0.0-alpha.9",
     "modal-enhanced-react-native-web": "^0.2.0",
     "react": "^16.6.x",
     "react-app-polyfill": "^0.1.3",
@@ -29,6 +31,7 @@
     "react-native-snackbar": "^2.2.0",
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "^0.10.x",
+    "react-router-dom": "^5.1.2",
     "react-web-vector-icons": "^1.0.2"
   },
   "devDependencies": {

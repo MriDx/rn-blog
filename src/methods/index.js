@@ -1,4 +1,11 @@
-import { getAllPost, login, me, categories, postByCategory } from "../consts";
+import {
+  getAllPost,
+  login,
+  me,
+  categories,
+  postByCategory,
+  post
+} from "../consts";
 
 export const _getAllPosts = async props => {
   return fetch(getAllPost);
@@ -39,4 +46,8 @@ export const _logout = async props => {
 
 export const _postByCategory = async props => {
   return fetch(postByCategory + props);
+};
+
+export const _getPost = async props => {
+  return fetch(post + props.id);
 };

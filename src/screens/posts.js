@@ -11,7 +11,8 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
-  Image
+  Image,
+  Linking
 } from "react-native";
 import {
   _getAllPosts,
@@ -21,7 +22,7 @@ import {
   _postByCategory
 } from "../methods";
 import { styles } from "../styles";
-import PostViewUI, { PostUI } from "./postview";
+import PostViewUI, { PostUI } from "./Postview";
 import Modal from "modal-enhanced-react-native-web";
 import { Seperator } from "../components";
 import { login } from "../consts";
@@ -30,10 +31,12 @@ import { Icon } from "../icons";
 import { SideDrawerMenu } from "../components/side_drawer";
 import { TopSection } from "../components/top_section";
 import { QuickView } from "../methods/modal_methods";
+import NavigationEvents from "@react-navigation/core/lib/commonjs/views/NavigationEvents";
 
 class Posts extends Component {
   constructor(props) {
     super(props);
+    console.log("init" + JSON.stringify(props));
     this.state = {
       posts: [],
       categories: [],
@@ -142,7 +145,7 @@ class Posts extends Component {
   /* logout method */
   onLogout = async () => {
     await AsyncStorage.removeItem("token");
-    this.setState({ showLogin: true });
+    this.setState({ showLogin: true, user: null });
   };
   /* login success methog */
   _fireSnackbarTimeoutandSaveToken = async () => {
@@ -205,6 +208,7 @@ class Posts extends Component {
       <SideDrawerMenu
         modalVisible={this.state.showMenu}
         closeMenu={this._toogleMenu}
+        user={this.state.user}
       />
     );
   };
@@ -229,6 +233,7 @@ class Posts extends Component {
     return (
       <View style={{ flex: 1 }}>
         {this._renderSideMenu()}
+
         <QuickPostView
           visibleModal={this.state.quickView}
           toggle={this._toggleQuickview}
@@ -236,7 +241,6 @@ class Posts extends Component {
           scrollViewRef={this.scrollViewRef}
           _handleOnScroll={this._handleOnScroll}
         />
-
         <Header
           onLogin={this.toogleModal}
           showLogin={this.state.showLogin}
@@ -245,6 +249,12 @@ class Posts extends Component {
           onMenu={() => this.setState({ showMenu: true })}
         />
         {this._showLoginSuccess()}
+        {/* <NavigationEvents
+          onWillFocus={payload => console.log("will focus", payload)}
+          onDidFocus={payload => console.log("did focus", payload)}
+          onWillBlur={payload => console.log("will blur", payload)}
+          onDidBlur={payload => console.log("did blur", payload)}
+        /> */}
         <LoginModal
           visibleModal={this.state.visibleModal}
           hideModal={this.toogleModal}
@@ -290,7 +300,11 @@ class Posts extends Component {
                 >
                   Latest Articles
                 </Text>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("Post", { id: 1 })
+                  }
+                >
                   <View>
                     <Text
                       style={{
