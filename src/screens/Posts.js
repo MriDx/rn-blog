@@ -22,9 +22,9 @@ import {
   _postByCategory
 } from "../methods";
 import { styles } from "../styles";
-import { PostUI } from "./Postview";
+//import { PostUI } from "./Postview";
 import Modal from "modal-enhanced-react-native-web";
-import { Seperator } from "../components";
+import { Seperator, PostUI } from "../components";
 import { login } from "../consts";
 import { AsyncStorage, ScrollView } from "react-native-web";
 import { Icon } from "../icons";
