@@ -17,11 +17,11 @@ class PostViewUI extends Component {
   }
 }
 
-let hotWrapper = () => () => PostViewUI;
+/* let hotWrapper = () => () => PostViewUI;
 if (Platform.OS === "web") {
   const { hot } = require("react-hot-loader");
   hotWrapper = hot;
-}
+} */
 //export default hotWrapper(module)(PostViewUI);
 
 export const PostUI = props => {
