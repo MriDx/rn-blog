@@ -22,7 +22,7 @@ import {
   _postByCategory
 } from "../methods";
 import { styles } from "../styles";
-import PostViewUI, { PostUI } from "./Postview";
+import { PostUI } from "./Postview";
 import Modal from "modal-enhanced-react-native-web";
 import { Seperator } from "../components";
 import { login } from "../consts";
@@ -132,11 +132,11 @@ class Posts extends Component {
       .then(res =>
         res.status === "success"
           ? (this.setState({
-              token: res.token.token,
-              loginLoading: false,
-              visibleModal: false,
-              snackbar: true
-            }),
+            token: res.token.token,
+            loginLoading: false,
+            visibleModal: false,
+            snackbar: true
+          }),
             this._fireSnackbarTimeoutandSaveToken())
           : null
       )
@@ -337,33 +337,33 @@ class Posts extends Component {
                   keyExtractor={(item, index) => index.toString()}
                 ></FlatList>
               ) : (
-                <View
-                  style={{
-                    height: 70,
-                    shadowOffset: { width: 1, height: 1 },
-                    shadowColor: "gray",
-                    shadowRadius: 10,
-                    borderRadius: 10,
-                    shadowOpacity: 0.3,
-                    alignSelf: "center",
-                    width:
-                      Dimensions.get("window").width > 720 ? "90%" : "100%",
-                    margin: 10,
-                    justifyContent: "center",
-                    alignItems: "center"
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontWeight: "600",
-                      fontSize: 16,
-                      color: "#4A5568"
-                    }}
-                  >
-                    No Articles found
+                      <View
+                        style={{
+                          height: 70,
+                          shadowOffset: { width: 1, height: 1 },
+                          shadowColor: "gray",
+                          shadowRadius: 10,
+                          borderRadius: 10,
+                          shadowOpacity: 0.3,
+                          alignSelf: "center",
+                          width:
+                            Dimensions.get("window").width > 720 ? "90%" : "100%",
+                          margin: 10,
+                          justifyContent: "center",
+                          alignItems: "center"
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontWeight: "600",
+                            fontSize: 16,
+                            color: "#4A5568"
+                          }}
+                        >
+                          No Articles found
                   </Text>
-                </View>
-              )}
+                      </View>
+                    )}
             </View>
             <View style={{ width: "35%" }}>
               <View
@@ -778,10 +778,10 @@ const LoginModal = props => {
             {props.loading ? (
               <ActivityIndicator size="small" color="#a9d8ff" />
             ) : (
-              <Text style={{ fontWeight: "600", color: "#fff" }}>
-                Let's start
+                <Text style={{ fontWeight: "600", color: "#fff" }}>
+                  Let's start
               </Text>
-            )}
+              )}
           </View>
         </TouchableOpacity>
       </View>
@@ -851,22 +851,22 @@ const Header = props => {
               </View>
             </TouchableWithoutFeedback>
           ) : (
-            <TouchableOpacity onPress={() => props.onLogout()}>
-              <View>
-                <Text
-                  style={{
-                    textTransform: "capitalize",
-                    fontSize: 16,
-                    fontWeight: "bold",
-                    color: "gray"
-                  }}
-                >
-                  {" "}
-                  Hello {props.user.name.split(" ")[0]}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )}
+              <TouchableOpacity onPress={() => props.onLogout()}>
+                <View>
+                  <Text
+                    style={{
+                      textTransform: "capitalize",
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      color: "gray"
+                    }}
+                  >
+                    {" "}
+                    Hello {props.user.name.split(" ")[0]}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
           <View style={{ width: 5 }} />
         </View>
       </View>
