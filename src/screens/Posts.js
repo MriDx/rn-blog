@@ -132,11 +132,11 @@ class Posts extends Component {
       .then(res =>
         res.status === "success"
           ? (this.setState({
-            token: res.token.token,
-            loginLoading: false,
-            visibleModal: false,
-            snackbar: true
-          }),
+              token: res.token.token,
+              loginLoading: false,
+              visibleModal: false,
+              snackbar: true
+            }),
             this._fireSnackbarTimeoutandSaveToken())
           : null
       )
@@ -209,6 +209,9 @@ class Posts extends Component {
         modalVisible={this.state.showMenu}
         closeMenu={this._toogleMenu}
         user={this.state.user}
+        categories={this.state.categories}
+        onCategory={this._onCategory}
+        onSignin={this._showLogin}
       />
     );
   };
@@ -217,8 +220,12 @@ class Posts extends Component {
     this.setState({ showMenu: false });
   };
 
+  _showLogin = () => {
+    this.setState({ visibleModal: true, showMenu: false });
+  };
+
   _onCategory = props => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, showMenu: false });
     _postByCategory(props.id)
       .then(response => response.json())
       .then(res =>
@@ -337,33 +344,33 @@ class Posts extends Component {
                   keyExtractor={(item, index) => index.toString()}
                 ></FlatList>
               ) : (
-                      <View
-                        style={{
-                          height: 70,
-                          shadowOffset: { width: 1, height: 1 },
-                          shadowColor: "gray",
-                          shadowRadius: 10,
-                          borderRadius: 10,
-                          shadowOpacity: 0.3,
-                          alignSelf: "center",
-                          width:
-                            Dimensions.get("window").width > 720 ? "90%" : "100%",
-                          margin: 10,
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontWeight: "600",
-                            fontSize: 16,
-                            color: "#4A5568"
-                          }}
-                        >
-                          No Articles found
+                <View
+                  style={{
+                    height: 70,
+                    shadowOffset: { width: 1, height: 1 },
+                    shadowColor: "gray",
+                    shadowRadius: 10,
+                    borderRadius: 10,
+                    shadowOpacity: 0.3,
+                    alignSelf: "center",
+                    width:
+                      Dimensions.get("window").width > 720 ? "90%" : "100%",
+                    margin: 10,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "600",
+                      fontSize: 16,
+                      color: "#4A5568"
+                    }}
+                  >
+                    No Articles found
                   </Text>
-                      </View>
-                    )}
+                </View>
+              )}
             </View>
             <View style={{ width: "35%" }}>
               <View
@@ -581,103 +588,7 @@ const QuickPostView = props => {
                 ellipsizeMode="tail"
                 style={{ lineHeight: 20, fontSize: 16 }}
               >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-                sapien turpis, auctor in purus ac, commodo posuere sapien. Nulla
-                facilisi. Praesent nec ex tempor, faucibus lorem a, varius
-                justo. Nulla feugiat ex non commodo porttitor. Curabitur elit
-                turpis, commodo at est sit amet, dignissim lobortis mauris.
-                Pellentesque scelerisque malesuada ex eu ornare. Proin
-                condimentum ipsum ac mi porta luctus. Duis pretium, lectus quis
-                porta vulputate, lectus lorem euismod ante, non euismod orci
-                ante in lectus. Nunc ut magna at magna mattis congue viverra ut
-                nibh. Cras et magna quis eros ultricies facilisis. Fusce
-                lobortis sit amet quam in viverra. Nulla sollicitudin ipsum non
-                leo finibus, ac efficitur nibh finibus. Etiam quam ligula,
-                consequat a congue a, semper in enim. Vivamus sed justo leo.
-                Quisque massa nunc, eleifend non mattis at, egestas vitae
-                tellus. Curabitur efficitur a magna id fermentum. Curabitur elit
-                nulla, finibus ut molestie ac, tristique quis ex. Etiam at felis
-                non enim interdum porttitor. Sed mattis ac elit vel mollis. Nunc
-                malesuada quam erat, ac malesuada elit imperdiet quis. Maecenas
-                malesuada elit vel auctor rhoncus. Nulla tincidunt tristique
-                nunc condimentum mollis. In in lacus in augue aliquet congue.
-                Aliquam egestas enim ut aliquam viverra. Maecenas eu purus ut
-                ligula elementum porta quis eget odio. Nulla facilisi. Phasellus
-                in aliquet ante. Mauris tempus viverra odio, quis vestibulum
-                nibh tempor porttitor. In egestas augue sed nunc euismod
-                tincidunt. Nulla metus nunc, tristique non gravida in, dapibus
-                vel nibh. Vestibulum quis risus at diam consectetur tincidunt
-                non id ex. Suspendisse rutrum dui nec ullamcorper hendrerit.
-                Vestibulum eu lacus vitae velit dignissim feugiat et quis augue.
-                Phasellus euismod facilisis congue. Suspendisse egestas neque et
-                finibus pellentesque. Vivamus eu tellus lacus. Nulla sit amet
-                sodales metus. Nam porta, ligula eget vestibulum aliquam, quam
-                massa imperdiet diam, id congue erat lorem facilisis sem. Proin
-                hendrerit pellentesque pulvinar. Morbi varius magna ut venenatis
-                lobortis. Morbi dictum at massa et malesuada. Nam consectetur
-                pellentesque augue vitae dignissim. Mauris eget massa vitae
-                ligula suscipit ullamcorper quis id risus. Cras finibus mi
-                augue, a eleifend sem rhoncus at. Orci varius natoque penatibus
-                et magnis dis parturient montes, nascetur ridiculus mus. Aliquam
-                erat volutpat. Etiam ut nulla eget ipsum dictum porttitor vel
-                sed ante. Ut convallis, dui sit amet aliquam rhoncus, ligula
-                risus eleifend augue, et imperdiet metus arcu vitae purus. Etiam
-                finibus, orci in condimentum egestas, leo lacus imperdiet nisl,
-                id pharetra elit eros nec libero. Cras facilisis tellus eget
-                lobortis placerat. Maecenas eget dui pretium, laoreet risus
-                eget, hendrerit magna. Maecenas vulputate eget nibh non laoreet.
-                Phasellus at tortor ullamcorper, efficitur libero nec, eleifend
-                nibh. Vestibulum ante nunc, feugiat ut nisi luctus, maximus
-                auctor nulla. Donec tristique euismod convallis. Curabitur
-                pretium, dolor ac dapibus iaculis, elit ante venenatis libero,
-                nec ultricies justo eros nec magna. Morbi iaculis eu lectus non
-                aliquam. Ut eros metus, lacinia nec molestie eu, faucibus ac
-                nisl. Donec at dui turpis. Vivamus varius augue nec viverra
-                vehicula. Vivamus enim magna, vehicula eget imperdiet id,
-                bibendum ac tellus. Vivamus egestas nisl ex, sed rutrum libero
-                auctor nec. Suspendisse nec volutpat libero. Praesent erat
-                ipsum, ultrices sed bibendum ac, egestas non purus. Vivamus sit
-                amet dui vel nisi sodales rutrum. Integer sit amet blandit
-                lorem. Donec eu lacinia ipsum, porttitor auctor dolor. Interdum
-                et malesuada fames ac ante ipsum primis in faucibus. Proin
-                rutrum enim vitae posuere hendrerit. Integer et nisl nulla.
-                Maecenas porttitor cursus ipsum, at pellentesque elit lobortis
-                sit amet. Integer sit amet scelerisque risus. Phasellus vel nunc
-                ac dolor sodales blandit. Maecenas venenatis massa sit amet
-                tortor luctus mollis. Vivamus eget interdum risus. Morbi in sem
-                ac nisi convallis mollis sed id magna. Mauris sodales sit amet
-                sem eget porta. In ante odio, malesuada in facilisis sed,
-                blandit nec neque. Sed vitae enim ac ante congue elementum. Sed
-                auctor sodales magna, eu eleifend ipsum bibendum placerat. Sed
-                massa nisi, varius eget lacus in, pulvinar gravida mi. Proin in
-                sodales quam, ut egestas metus. Sed euismod est sit amet massa
-                sollicitudin, ac consequat odio aliquet. Nulla cursus leo in dui
-                vestibulum, mollis blandit nibh lacinia. Ut sodales orci ac
-                scelerisque euismod. Proin consequat sapien id leo malesuada,
-                sed ornare mi cursus. Praesent posuere vulputate lacus id
-                ullamcorper. Maecenas semper efficitur nunc at porta. Aliquam
-                erat volutpat. Quisque suscipit tellus arcu, eu hendrerit lacus
-                finibus id. Maecenas sed risus ultricies, lobortis orci in,
-                commodo tortor. Nullam ac sem vel neque egestas vestibulum vel
-                et nisi. Praesent porttitor tortor vel diam porttitor, at auctor
-                nisi fringilla. Curabitur at porta ligula, eget volutpat magna.
-                Fusce elit lorem, porttitor nec eros id, iaculis ornare ex.
-                Phasellus quis leo turpis. Cras ipsum lectus, mattis sit amet
-                ultrices ac, auctor eget mi. Aliquam erat volutpat. Nunc non
-                suscipit erat. Suspendisse potenti. Proin eget porta massa. Sed
-                viverra lacinia sapien, in efficitur orci dapibus fermentum.
-                Nullam vel pharetra est. Vestibulum iaculis blandit tortor quis
-                fermentum. Integer nec ligula egestas ante blandit convallis.
-                Sed dignissim odio purus, sed dignissim tortor tempus et.
-                Suspendisse tincidunt sit amet nisi vitae facilisis. Donec a
-                justo et est porta bibendum. Interdum et malesuada fames ac ante
-                ipsum primis in faucibus. Nunc sagittis mi vitae cursus
-                sollicitudin. Fusce scelerisque luctus tellus. Duis facilisis
-                dictum lacus. Donec viverra, lorem eget imperdiet tempus, nunc
-                ante volutpat mi, in suscipit tellus sapien eu erat. Vestibulum
-                imperdiet varius laoreet. Aliquam laoreet nunc id lectus
-                consequat, non pretium sem aliquet. Nullam ultricies ultricies
-                venenatis.
+                {props.post.content}
               </Text>
             </View>
           </ScrollView>
@@ -737,9 +648,19 @@ const LoginModal = props => {
         }}
       >
         <Text style={{ fontSize: 26, alignSelf: "center", margin: 10 }}>
-          Login
+          Sign in
         </Text>
-        <Seperator height={150} width="100%" />
+        {/* <Seperator height={150} width="100%" /> */}
+        <Image
+          source={require("../images/login_icon.svg")}
+          style={{
+            width: 200,
+            height: 100,
+            alignSelf: "center",
+            marginTop: 10,
+            marginBottom: 10
+          }}
+        />
         <TextInput
           textContentType="emailAddress"
           onChangeText={text => props.setEmail(text)}
@@ -778,10 +699,35 @@ const LoginModal = props => {
             {props.loading ? (
               <ActivityIndicator size="small" color="#a9d8ff" />
             ) : (
-                <Text style={{ fontWeight: "600", color: "#fff" }}>
-                  Let's start
+              <Text style={{ fontWeight: "600", color: "#fff" }}>
+                Let's start
               </Text>
-              )}
+            )}
+          </View>
+        </TouchableOpacity>
+        <Text style={{ alignSelf: "center", margin: 10 }}>OR</Text>
+        <TouchableOpacity
+          onPress={() => props.onLogin()}
+          disabled={props.loading}
+        >
+          <View
+            style={{
+              alignSelf: "center",
+              width: "50%",
+              height: 50,
+              backgroundColor: "#33a4ff",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 5
+            }}
+          >
+            {props.loading ? (
+              <ActivityIndicator size="small" color="#a9d8ff" />
+            ) : (
+              <Text style={{ fontWeight: "600", color: "#fff" }}>
+                Create an account
+              </Text>
+            )}
           </View>
         </TouchableOpacity>
       </View>
@@ -851,22 +797,22 @@ const Header = props => {
               </View>
             </TouchableWithoutFeedback>
           ) : (
-              <TouchableOpacity onPress={() => props.onLogout()}>
-                <View>
-                  <Text
-                    style={{
-                      textTransform: "capitalize",
-                      fontSize: 16,
-                      fontWeight: "bold",
-                      color: "gray"
-                    }}
-                  >
-                    {" "}
-                    Hello {props.user.name.split(" ")[0]}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity onPress={() => props.onLogout()}>
+              <View>
+                <Text
+                  style={{
+                    textTransform: "capitalize",
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    color: "gray"
+                  }}
+                >
+                  {" "}
+                  Hello {props.user.name.split(" ")[0]}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
           <View style={{ width: 5 }} />
         </View>
       </View>

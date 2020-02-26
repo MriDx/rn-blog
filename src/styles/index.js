@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     height: 40,
     width: "75%",
     borderRadius: 4,
-    backgroundColor: "#82c7ff",
+    backgroundColor: "#fff",
     margin: 10,
     alignSelf: "center",
     paddingStart: 5,
