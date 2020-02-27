@@ -10,3 +10,4 @@ export const Seperator = props => {
 export * from "./top_section";
 export * from "./side_drawer";
 export * from "./PostView";
+export * from "./DropDown";

@@ -79,7 +79,10 @@ export const SideDrawerMenu = props => {
                 {props.user.name}
               </Text>
             </View>
-            <TouchableOpacity style={{ marginTop: 20, marginStart: 30 }}>
+            <TouchableOpacity
+              style={{ marginTop: 20, marginStart: 30 }}
+              onPress={() => props.hideMenuAndOpenCreatePost()}
+            >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon name="file-document" size={30} color="#44A9C9" />
                 <Text

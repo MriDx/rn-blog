@@ -33,6 +33,7 @@ import { SideDrawerMenu } from "../components/side_drawer";
 import { TopSection } from "../components/top_section";
 import { QuickView } from "../methods/modal_methods";
 import NavigationEvents from "@react-navigation/core/lib/commonjs/views/NavigationEvents";
+import { CreatePost } from "../components/CreatePost";
 
 class Posts extends Component {
   constructor(props) {
@@ -55,7 +56,10 @@ class Posts extends Component {
       showLogin: true,
       showMenu: false,
       quickView: false,
-      asktoSignup: false
+      asktoSignup: false,
+      showCategories: false,
+      selectedCategory: "",
+      showCreatePost: false
     };
   }
 
@@ -247,6 +251,8 @@ class Posts extends Component {
         categories={this.state.categories}
         onCategory={this._onCategory}
         onSignin={this._showLogin}
+        toggleModals={this._toggleModals}
+        hideMenuAndOpenCreatePost={this._hideMenuAndOpenCreatePost}
       />
     );
   };
@@ -271,10 +277,49 @@ class Posts extends Component {
       .catch(error => console.log(error));
   };
 
+  _showPostEditor = props => {
+    return (
+      <CreatePost
+        modalVisible={this.state.showCreatePost}
+        closeMenu={this._toogleMenu}
+        user={this.state.user}
+        categories={this.state.categories}
+        onCategory={this._onCategory}
+        onSignin={this._showLogin}
+        showCategories={this.state.showCategories}
+        _toggleCategories={this._toggleCategories}
+        categoris={this.state.categories}
+        selectedCategory={this.state.selectedCategory}
+        setSelectedCategory={this._setCategorySelected}
+        toggleModals={this._toggleModals}
+      />
+    );
+  };
+
+  _hideMenuAndOpenCreatePost = () => {
+    this._toggleModals({ id: 0 });
+    this.setState({ showMenu: false });
+  };
+
+  _toggleModals = props => {
+    props.id === 0
+      ? this.setState({ showCreatePost: !this.state.showCreatePost })
+      : this.setState({ showCategories: !this.state.showCategories });
+  };
+
+  _toggleCategories = () => {
+    this.setState({ showCategories: !this.state.showCategories });
+  };
+  _setCategorySelected = props => {
+    console.log("from main " + props.name);
+    this.setState({ selectedCategory: props });
+  };
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         {this._renderSideMenu()}
+        {this._showPostEditor()}
 
         <QuickPostView
           visibleModal={this.state.quickView}
