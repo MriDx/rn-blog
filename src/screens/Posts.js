@@ -19,7 +19,8 @@ import {
   _login,
   _getUser,
   _getAllCategories,
-  _postByCategory
+  _postByCategory,
+  _signup
 } from "../methods";
 import { styles } from "../styles";
 //import { PostUI } from "./Postview";
@@ -53,7 +54,8 @@ class Posts extends Component {
       user: null,
       showLogin: true,
       showMenu: false,
-      quickView: false
+      quickView: false,
+      asktoSignup: false
     };
   }
 
@@ -113,9 +115,16 @@ class Posts extends Component {
 
   /* to toggle modal */
   toogleModal = () => {
-    this.setState({ visibleModal: !this.state.visibleModal });
+    this.setState({
+      visibleModal: !this.state.visibleModal,
+      asktoSignup: this.state.visibleModal ? null : false
+    });
   };
 
+  /* set email from text input */
+  _setName = props => {
+    this.setState({ name: props });
+  };
   /* set email from text input */
   _setEmail = props => {
     this.setState({ email: props });
@@ -135,13 +144,39 @@ class Posts extends Component {
               token: res.token.token,
               loginLoading: false,
               visibleModal: false,
-              snackbar: true
+              snackbar: true,
+              name: "",
+              email: "",
+              password: ""
+            }),
+            this._fireSnackbarTimeoutandSaveToken())
+          : (this.setState({ loginLoading: false, asktoSignup: true }),
+            console.log(res))
+      )
+      .catch(error => console.error(error));
+  };
+
+  _onSignup = () => {
+    this.setState({ loginLoading: true });
+    _signup(["POST", this.state.name, this.state.email, this.state.password])
+      .then(response => response.json())
+      .then(res =>
+        res.status === "success"
+          ? (this.setState({
+              token: res.user.token,
+              loginLoading: false,
+              visibleModal: false,
+              snackbar: true,
+              name: "",
+              email: "",
+              password: ""
             }),
             this._fireSnackbarTimeoutandSaveToken())
           : null
       )
-      .catch(error => console.error(error));
+      .catch(error => console.log(error));
   };
+
   /* logout method */
   onLogout = async () => {
     await AsyncStorage.removeItem("token");
@@ -265,12 +300,16 @@ class Posts extends Component {
         <LoginModal
           visibleModal={this.state.visibleModal}
           hideModal={this.toogleModal}
+          setName={this._setName}
           setEmail={this._setEmail}
           setPassword={this._setPassword}
           email={this.state.email}
+          name={this.state.name}
           password={this.state.password}
           onLogin={this._onLogin}
           loading={this.state.loginLoading}
+          asktoSignup={this.state.asktoSignup}
+          onSignup={this._onSignup}
         />
         <TopSection />
         <View style={{ backgroundColor: "#F7FAFC" }}>
@@ -644,12 +683,12 @@ const LoginModal = props => {
           width: "30%" > 400 ? "30%" : 400,
           alignSelf: "center",
           height: Dimensions.get("window").height / 1.5,
+          maxHeight: 500,
+          minHeight: 300,
           borderRadius: 4
         }}
       >
-        <Text style={{ fontSize: 26, alignSelf: "center", margin: 10 }}>
-          Sign in
-        </Text>
+        <Text style={{ fontSize: 26, alignSelf: "center", margin: 10 }}></Text>
         {/* <Seperator height={150} width="100%" /> */}
         <Image
           source={require("../images/login_icon.svg")}
@@ -661,6 +700,34 @@ const LoginModal = props => {
             marginBottom: 10
           }}
         />
+
+        {props.asktoSignup ? (
+          <View style={{}}>
+            <Text
+              style={{
+                alignSelf: "center",
+                textAlign: "center",
+                fontSize: 16,
+                fontWeight: "400",
+                padding: 10
+              }}
+            >
+              It seems like you are new here ! Well you can continue just by
+              entering your name
+            </Text>
+            <TextInput
+              textContentType="name"
+              onChangeText={text => props.setName(text)}
+              style={styles.textInputStyle}
+              placeholder="Full Name"
+              value={props.name}
+              onSubmitEditing={() => this.emailField.focus()}
+            />
+          </View>
+        ) : (
+          <Seperator height={70} />
+        )}
+
         <TextInput
           textContentType="emailAddress"
           onChangeText={text => props.setEmail(text)}
@@ -668,6 +735,7 @@ const LoginModal = props => {
           placeholder="Email"
           value={props.email}
           onSubmitEditing={() => this.secondTextInput.focus()}
+          ref={input => (this.emailField = input)}
         />
         <TextInput
           textContentType="password"
@@ -678,11 +746,16 @@ const LoginModal = props => {
           value={props.password}
           returnKeyType="go"
           ref={input => (this.secondTextInput = input)}
-          onSubmitEditing={() => props.onLogin()}
+          onSubmitEditing={() =>
+            props.asktoSignup ? props.onSignup() : props.onLogin()
+          }
         />
         <Seperator width="100%" height={10} />
         <TouchableOpacity
-          onPress={() => props.onLogin()}
+          ref={view => (this.view = view)}
+          onPress={() =>
+            props.asktoSignup ? props.onSignup() : props.onLogin()
+          }
           disabled={props.loading}
         >
           <View
@@ -705,7 +778,7 @@ const LoginModal = props => {
             )}
           </View>
         </TouchableOpacity>
-        <Text style={{ alignSelf: "center", margin: 10 }}>OR</Text>
+        {/* <Text style={{ alignSelf: "center", margin: 10 }}>OR</Text>
         <TouchableOpacity
           onPress={() => props.onLogin()}
           disabled={props.loading}
@@ -729,7 +802,7 @@ const LoginModal = props => {
               </Text>
             )}
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </Modal>
   );

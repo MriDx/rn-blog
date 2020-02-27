@@ -4,7 +4,8 @@ import {
   me,
   categories,
   postByCategory,
-  post
+  post,
+  signup
 } from "../consts";
 
 export const _getAllPosts = async props => {
@@ -23,6 +24,22 @@ export const _login = async props => {
     body: JSON.stringify({
       email: props[1],
       password: props[2]
+    }),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  });
+};
+
+export const _signup = async props => {
+  console.log("mridx" + props + signup);
+  return fetch(signup, {
+    method: props[0],
+    body: JSON.stringify({
+      name: props[1],
+      email: props[2],
+      password: props[3]
     }),
     headers: {
       Accept: "application/json",
